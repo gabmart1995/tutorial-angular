@@ -13,6 +13,8 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
 import { ProgressComponent } from './pages/progress/progress.component';
 import { APP_ROUTES } from './app.routes';
+import { PagesComponent } from './pages/pages.component';
+import { RegisterComponent } from './login/register.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { APP_ROUTES } from './app.routes';
     HeaderComponent,
     SidebarComponent,
     BreadcrumbsComponent,
-    ProgressComponent
+    ProgressComponent,
+    PagesComponent,
+    RegisterComponent
   ],
 
   // aqui se incluyen los modulos personalizados
