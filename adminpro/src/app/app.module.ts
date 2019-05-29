@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 // modulos personalizados
 import { PagesModule } from './pages/pages.module';
 
+// temporal
+import { FormsModule } from '@angular/forms';
+
 // rutas
 import { APP_ROUTES } from './app.routes';
 
@@ -13,11 +16,12 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
 
   // aqui se incluyen los modulos personalizados
@@ -25,7 +29,8 @@ import { RegisterComponent } from './login/register.component';
     BrowserModule,
     AppRoutingModule,
     APP_ROUTES,
-    PagesModule
+    PagesModule,
+    FormsModule  // temporal
   ],
   providers: [],
   bootstrap: [AppComponent]

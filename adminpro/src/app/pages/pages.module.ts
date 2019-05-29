@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 // modulos
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 // rutas
 import { PAGES_ROUTES } from './pages.routes';
@@ -11,6 +12,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
 import { Graficas1Component } from './graficas1/graficas1.component';
+import { IncrementadorComponent } from '../components/incrementador/incrementador.component'; // temporal
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { Graficas1Component } from './graficas1/graficas1.component';
         DashboardComponent,
         ProgressComponent,
         Graficas1Component,
-        PagesComponent
+        PagesComponent,
+        IncrementadorComponent
     ],
 
     // aqui se exportan los modulos de la aplicacion.
@@ -31,7 +34,8 @@ import { Graficas1Component } from './graficas1/graficas1.component';
 
     imports : [
         SharedModule,
-        PAGES_ROUTES
+        PAGES_ROUTES,
+        FormsModule,
     ]
 })
 
