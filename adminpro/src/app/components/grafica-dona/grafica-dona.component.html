@@ -1,0 +1,10 @@
+<!-- componente de la grafica dona -->
+<h4 class="card-title">{{ titulo }}</h4> <!-- Imprime el titulo -->
+<br>
+<div style="display: block">
+   <canvas baseChart
+      [data]="datos"
+      [labels]="leyenda"
+      [chartType]="tipoGrafica">
+    </canvas> 
+</div><br>

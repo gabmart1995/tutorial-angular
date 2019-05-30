@@ -4,15 +4,59 @@
     <div class="card">
       <div class="card-body">
         <!--Grafica 1-->
-        <div style="display: block">
-            <canvas baseChart
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType">
-            </canvas>
-          </div>
+        <app-grafica-dona 
+          [leyenda]="graficos.grafico1.labels" 
+          [datos] ="graficos.grafico1.data" 
+          tipoGrafica="doughnut" 
+          [titulo]="graficos.grafico1.leyenda"></app-grafica-dona>
       </div>
     </div>
   </div>
 
+  
+     <div class="col-sm-6">
+      <div class="card">
+       <div class="card-body">
+          <div style="display: block">
+            <!--Grafica 2-->
+            <app-grafica-dona 
+              [leyenda]="graficos.grafico2.labels" 
+              [datos] ="graficos.grafico2.data" 
+              tipoGrafica="doughnut" 
+              [titulo]="graficos.grafico2.leyenda"></app-grafica-dona>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+         <div class="card-body">
+            <!--Grafica 3-->
+            <app-grafica-dona 
+              [leyenda]="graficos.grafico3.labels" 
+              [datos] ="graficos.grafico3.data" 
+              tipoGrafica="doughnut" 
+              [titulo]="graficos.grafico3.leyenda">
+            </app-grafica-dona>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-sm-6">
+        <div class="card">
+         <div class="card-body">
+             <!--Grafica 4 -->
+             <app-grafica-dona 
+              [leyenda]="graficos.grafico4.labels" 
+              [datos] ="graficos.grafico4.data" 
+              tipoGrafica="doughnut" 
+              [titulo]="graficos.grafico4.leyenda">
+            </app-grafica-dona>
+          </div>
+        </div>
+      </div>
 </div>
