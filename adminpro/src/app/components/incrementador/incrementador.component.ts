@@ -49,10 +49,8 @@ export class IncrementadorComponent implements OnInit {
     // uitiliza el elemento Hash asignada
     this.txtProgress.nativeElement.value = this.progreso;
 
-    // emite un nuevo valor y actualiza el padre.
+    // ejecuta la salida de la varible progreso hacia el padre.
     this.cambioValor.emit(this.progreso);
-
-    this.txtProgress.nativeElement.focus();
   }
 
   // funcion para incrementar la barra de progreso
@@ -74,5 +72,6 @@ export class IncrementadorComponent implements OnInit {
 
     // se invoca el evento y emite el valor progreso en ese momento.
     this.cambioValor.emit(this.progreso);
+    this.txtProgress.nativeElement.focus();
   }
 }

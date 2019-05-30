@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 // modulos
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
-
+// ng2-charts
+import { ChartsModule } from 'ng2-charts';
 // rutas
 import { PAGES_ROUTES } from './pages.routes';
 
@@ -13,6 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
 import { Graficas1Component } from './graficas1/graficas1.component';
 import { IncrementadorComponent } from '../components/incrementador/incrementador.component'; // temporal
+
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import { IncrementadorComponent } from '../components/incrementador/incrementado
         SharedModule,
         PAGES_ROUTES,
         FormsModule,
+        ChartsModule
     ]
 })
 
