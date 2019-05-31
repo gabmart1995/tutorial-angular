@@ -14,7 +14,7 @@ import { ProgressComponent } from './progress/progress.component';
 import { Graficas1Component } from './graficas1/graficas1.component';
 import { IncrementadorComponent } from '../components/incrementador/incrementador.component'; // temporal
 import { GraficaDonaComponent } from '../components/grafica-dona/grafica-dona.component';
-import { AccoutSettingsComponent } from './accout-settings/accout-settings.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 
 @NgModule({
@@ -25,7 +25,7 @@ import { AccoutSettingsComponent } from './accout-settings/accout-settings.compo
         PagesComponent,
         IncrementadorComponent,
         GraficaDonaComponent,
-        AccoutSettingsComponent
+        AccountSettingsComponent
     ],
 
     // aqui se exportan los modulos de la aplicacion.

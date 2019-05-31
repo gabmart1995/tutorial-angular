@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
 
 // modulos personalizados
 import { PagesModule } from './pages/pages.module';
@@ -10,10 +11,15 @@ import { FormsModule } from '@angular/forms';
 // rutas
 import { APP_ROUTES } from './app.routes';
 
-import { AppRoutingModule } from './app-routing.module';
+// services
+import { SettingsService } from './services/settings.service';
+
+// componentes
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
+
+
 
 
 @NgModule({
@@ -31,7 +37,7 @@ import { RegisterComponent } from './login/register.component';
     PagesModule,
     FormsModule  // temporal
   ],
-  providers: [],
+  providers: [SettingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
