@@ -1,7 +1,7 @@
 import { Component,  OnInit } from '@angular/core';
 
 // services
-import { SettingsService } from '../../services/settings.service';
+import { SettingsService } from '../../services/services.index';
 
 @Component({
   selector: 'app-accout-settings',

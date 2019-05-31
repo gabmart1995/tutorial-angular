@@ -17,7 +17,6 @@ export class SettingsService {
 
   // guarda lo almacenado en la variable en un string de JSON
   guardarAjustes() {
-    console.log('Guardado en el localStorage');
     localStorage.setItem('ajustes', JSON.stringify(this.ajustes));
   }
 
@@ -29,8 +28,6 @@ export class SettingsService {
       // aplica un set a las variables y transforma los datos a string
       // de JSON a JavaScript
       this.ajustes = JSON.parse(localStorage.getItem('ajustes'));
-      console.log('Cargando del localStorage');
-
       this.aplicarTema(this.ajustes.tema);
     }
 
