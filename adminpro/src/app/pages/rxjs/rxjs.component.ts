@@ -1,51 +1,83 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscriber, Subscription } from 'rxjs';
+import { map, filter } from 'rxjs/operators';  // invoca el metodo map de los operadores
 
 @Component({
   selector: 'app-rxjs',
   templateUrl: './rxjs.component.html',
   styles: []
 })
-export class RxjsComponent implements OnInit {
+export class RxjsComponent implements OnInit, OnDestroy {
+
+  // variable que alamcena la suscripcion
+  subscription: Subscription;
 
   constructor() {
 
-    // el observador es infinito
-    let obs = new Observable( observer => {
+    // crea el observable
+      this.subscription = this.regresarObservable().subscribe(
+      numero =>  console.log('Subs', numero),  // next
+      error => console.error('Error en el obs', error), // error
+      () => console.log('El observador termino') // complete
+    );
+
+   }
+
+  ngOnInit() {
+  }
+
+  ngOnDestroy() {
+
+    // se ejecuta esta funcion
+    console.log('la pagina se va a cerrar');
+    this.subscription.unsubscribe();
+  }
+
+  regresarObservable(): Observable<any> {
+
+    // logica del observable
+     return new Observable( (observer: Subscriber<any>) => {
 
       let contador = 0;
       let intervalo = setInterval(() => {
 
         contador += 1;
 
+        // retorna el objeto
+        const salida = {
+          valor: contador
+        };
+
         // le pasa los datos a obs y lo ejecuta
-        observer.next( contador );
+        observer.next( salida );
 
         if (contador === 3) {
           clearInterval(intervalo);
           observer.complete();
         }
 
-        if (contador === 2) {
-          observer.error();
-        }
-
       }, 1000);
 
-    });
+    }).pipe(
 
-    // cuando el observador haya alcanzado el objetivo ejecutara esta funcion
-    // recibe 3 parametros
+      // map transforma y devuelve el tipo de dato
+      map( resp => resp.valor ),
 
-    obs.subscribe(
-      numero =>  console.log('Subs', numero),  // next cuando yo recibo informacion
-      error => console.error('Error en el obs', error), // error muestra los errores
-      () => console.log('El observador termino') // complete cuando completa su tarea
-    );
+      // filter filtra la salida de datos
+      filter( (valor,  index) => {
 
-   }
+        // el index corresponde al numero de veces que se ejecuta el filter
+        if ((valor % 2) === 1) {
+          return true;
+        }
 
-  ngOnInit() {
+        else {
+          return false;
+        }
+      })
+
+      );
+
   }
 
 }
