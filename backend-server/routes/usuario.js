@@ -1,5 +1,9 @@
 var express = require('express');
 var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+
+// se obtiene la semilla del token
+var SEED = require('./../config/config').SEED;
 
 var app = express();
 
@@ -18,7 +22,7 @@ var Usuario = require('../models/usuario');
 */
 
 // ==========================================
-//		Obtener todos los usuarios
+//		Obtiene todos los usuarios
 // ==========================================
 
 app.get('/', (request, response, next) => {
@@ -43,6 +47,31 @@ app.get('/', (request, response, next) => {
                 
                 });
 });
+
+// ==========================================
+//		Verificar token JWT
+// ==========================================
+/*
+app.use('/', (request, response, next) => {
+
+    // manda el token por la URL
+    var token = request.query.token;
+
+    // se necesita verificar si el token es valido
+    jwt.verify( token, SEED, (error, decoded) => {
+
+        if (error) {
+            return response.status(401).json({
+                ok: false,
+                mensaje: 'Token no valido',
+                errors: error
+            });
+        }
+
+        //continua con el proceso
+        next();
+    });
+});*/
 
 // ==========================================
 //		Crear usuario
