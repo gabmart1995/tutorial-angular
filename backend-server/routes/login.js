@@ -1,6 +1,6 @@
 var express = require('express');
 var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+var jwt = require('jsonwebtoken'); // se importan los servicios
 
 // se obtiene la semilla del token
 var SEED = require('./../config/config').SEED;

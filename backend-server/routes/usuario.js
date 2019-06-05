@@ -1,9 +1,8 @@
 var express = require('express');
 var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
 
-// se obtiene la semilla del token
-var SEED = require('./../config/config').SEED;
+// se importa el middleware
+var mdAutenticacion = require('./../middlewares/autenticacion');
 
 var app = express();
 
@@ -49,73 +48,10 @@ app.get('/', (request, response, next) => {
 });
 
 // ==========================================
-//		Verificar token JWT
-// ==========================================
-/*
-app.use('/', (request, response, next) => {
-
-    // manda el token por la URL
-    var token = request.query.token;
-
-    // se necesita verificar si el token es valido
-    jwt.verify( token, SEED, (error, decoded) => {
-
-        if (error) {
-            return response.status(401).json({
-                ok: false,
-                mensaje: 'Token no valido',
-                errors: error
-            });
-        }
-
-        //continua con el proceso
-        next();
-    });
-});*/
-
-// ==========================================
-//		Crear usuario
-// ==========================================
-
-app.post('/', (request, response) => {
-
-    //recibe la informacion del formulario y la almacema en la variable
-    var body = request.body;
-
-    // Crea un nuevo registro y encripta la contraseña
-    var usuario = new Usuario({
-        nombre: body.nombre,
-        apellido: body.apellido,
-        email: body.email,
-        password:  bcrypt.hashSync(body.password, 10),          
-        img: body.img,
-        rol: body.rol
-    });
-
-    // guardamos los cambios
-    usuario.save( (error, usuarioGuardado) => {
-        
-        if (error) {
-            return response.status(400).json({
-                ok: false,
-                mensaje: 'Error al crear usuario',
-                errors: error
-            });
-        }
-
-        // Recurso creado
-        response.status(201).json({
-            ok: true,
-            usuario: usuarioGuardado
-        }); 
-    });
-});
-
-// ==========================================
 //		Actualizar usuario
 // ==========================================
 
-app.patch('/:id', (request, response) => {
+app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
 
     // Params permite obtener la ultima referencia de la direccion url
     var id = request.params.id;
@@ -171,10 +107,50 @@ app.patch('/:id', (request, response) => {
 });
 
 // ==========================================
+//		Crear usuario
+// ==========================================
+
+// se invoca el middleware del autenticacion de la aplicacion
+app.post('/', mdAutenticacion.verificarToken, (request, response) => {
+
+    //recibe la informacion del formulario y la almacema en la variable
+    var body = request.body;
+
+    // Crea un nuevo registro y encripta la contraseña
+    var usuario = new Usuario({
+        nombre: body.nombre,
+        apellido: body.apellido,
+        email: body.email,
+        password:  bcrypt.hashSync(body.password, 10),          
+        img: body.img,
+        rol: body.rol
+    });
+
+    // guardamos los cambios
+    usuario.save( (error, usuarioGuardado) => {
+        
+        if (error) {
+            return response.status(400).json({
+                ok: false,
+                mensaje: 'Error al crear usuario',
+                errors: error
+            });
+        }
+
+        // Recurso creado => OK
+        response.status(201).json({
+            ok: true,
+            usuario: usuarioGuardado,
+            usuarioToken: request.usuario // imprime el token del que genera la peticion
+        }); 
+    });
+});
+
+// ==========================================
 //		Eliminar usuario por id
 // ==========================================
 
-app.delete('/:id', (request, response) =>{
+app.delete('/:id', mdAutenticacion.verificarToken, (request, response) =>{
 
     var id = request.params.id;
 
@@ -196,7 +172,7 @@ app.delete('/:id', (request, response) =>{
             });
         }
         
-        // Recurso eliminado
+        // Recurso eliminado => OK
         response.status(200).json({
             ok: true,
             usuario: usuarioBorrado
