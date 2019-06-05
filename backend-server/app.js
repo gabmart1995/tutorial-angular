@@ -17,6 +17,8 @@ var bodyParser = require('body-parser');
 var appRoutes = require('./routes/app');
 var usuarioRoutes = require('./routes/usuario');
 var loginRoutes = require('./routes/login');
+var hospitalRoutes = require('./routes/hospital');
+var medicoRoutes = require('./routes/medico');
 
 // inicializacion de variables del servidor
 var app = express();
@@ -27,6 +29,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // configuracion de las rutas
+app.use('/hospital', hospitalRoutes);
+// app.use('/medico', medicoRoutes);
 app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
 app.use('/', appRoutes);
@@ -37,8 +41,6 @@ mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', ( error, res
     if ( error ) throw error; 
     console.log('Base de datos: \x1b[32m%s\x1b[0m', 'online');
 });
-
-
 
 // escucha las peticiones y levanta el servidor en el puerto seleccionado
 app.listen(3000,  () => {

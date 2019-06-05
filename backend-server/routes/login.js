@@ -1,3 +1,7 @@
+// ==========================================
+//		Rutas de login
+// ==========================================
+
 var express = require('express');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken'); // se importan los servicios

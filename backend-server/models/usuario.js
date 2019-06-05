@@ -1,8 +1,12 @@
-var mongoonse = require('mongoose');
+// ==========================================
+//		Modelo de usuarios
+// ==========================================
+
+var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 
 // Se definen los esquemas
-var Schema = mongoonse.Schema;
+var Schema = mongoose.Schema;
 
 /*
     {VALUE}: obtiene el valor almacenado en el campo.
@@ -30,4 +34,4 @@ var usuarioSchema = new Schema({
 usuarioSchema.plugin( uniqueValidator, { message: '{PATH} debe ser unico' } );
 
 // exporta el esquema
-module.exports = mongoonse.model('Usuario', usuarioSchema);
+module.exports = mongoose.model('Usuario', usuarioSchema);

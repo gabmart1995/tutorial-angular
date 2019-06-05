@@ -97,7 +97,7 @@ app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
             // muestra una carita feliz con la contraseña
             usuarioGuardado.password = ':)';
 
-             // Recurso actualizado
+             // Recurso actualizado => OK
             response.status(200).json({
                 ok: true,
                 usuario: usuarioGuardado
@@ -177,7 +177,6 @@ app.delete('/:id', mdAutenticacion.verificarToken, (request, response) =>{
             ok: true,
             usuario: usuarioBorrado
         }); 
-
     });
 });
 
