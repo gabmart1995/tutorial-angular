@@ -16,30 +16,37 @@ var Hospital = require('./../models/hospital');
 
 app.get('/', (request, response, next) => {
 
-    Hospital.find({}, (error, hospitales) => {
+    // Populate permite obtener registros de otras tablas
+    // se especifican 2 parametros: el primero corresponde a la
+    // tabla y el segundo son los campos que deseas mostrar 
 
-        if (error) {
-            return response.status(500).json({
-                ok: false,
-                mensaje: 'Error al cargando los hospitales',
-                errors: error  // muestra el error al programador
+
+    Hospital.find({})
+        .populate('usuario', 'nombre email')  
+        .exec((error, hospitales) => {
+
+            if (error) {
+                return response.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al cargando los hospitales',
+                    errors: error  // muestra el error al programador
+                });
+            }
+
+            // peticion aceptada => OK
+            response.status(200).json({
+                ok: true,
+                hospitales: hospitales  // retorna todos los hospitales
             });
-        }
-
-        // peticion aceptada => OK
-        response.status(200).json({
-            ok: true,
-            hospitales: hospitales  // retorna todos los hospitales
         });
-   });
 });
 
 
 // ==========================================
-//		Crea un registro de  hospital
+//		Crea un registro del hospital
 // ==========================================
 
-app.post('/', (request, response) => {
+app.post('/', mdAutenticacion.verificarToken, (request, response) => {
 
     // recibe la informacion del formulario
     var body = request.body
@@ -47,8 +54,7 @@ app.post('/', (request, response) => {
     // crea el registro
     var hospital = new Hospital({
         nombre: body.nombre,
-        img: body.img,
-        usuario: body.usuario
+        usuario: request.usuario._id
     });
 
     hospital.save((error, hospitalGuardado) => {
@@ -64,17 +70,16 @@ app.post('/', (request, response) => {
         // recurso creado => OK
         response.status(201).json({
             ok: true,
-            hospital: hospitalGuardado
-            // usuarioToken: request.usuario
+            hospital: hospitalGuardado,
         });
     });
 });
 
 // ==========================================
-//		Modifica un registro de hospital
+//		Actualiza un registro de hospital
 // ==========================================
 
-app.patch('/:id', (request, response) => {
+app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
 
     var id = request.params.id;
     var body = request.body;
@@ -102,6 +107,7 @@ app.patch('/:id', (request, response) => {
         // asigna los valores
         hospital.nombre = body.nombre;
         hospital.img = body.img;
+        hospital.usuario = request.usuario._id;
 
         //salva los cambios
         hospital.save((error, hospitalGuardado) => {
@@ -109,7 +115,7 @@ app.patch('/:id', (request, response) => {
             if (error) {
                 return response.status(400).json({
                     ok: false,
-                    mensaje: 'error al actualizar el usuario',
+                    mensaje: 'error al actualizar hospital',
                     errors: error
                 });
             }
@@ -128,7 +134,7 @@ app.patch('/:id', (request, response) => {
 //		Elimina un registro de hospital
 // ==========================================
 
-app.delete('/:id', (request, response) => {
+app.delete('/:id', mdAutenticacion.verificarToken, (request, response) => {
 
     var id = request.params.id;
 

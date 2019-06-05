@@ -29,8 +29,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // configuracion de las rutas
+app.use('/medico', medicoRoutes);
 app.use('/hospital', hospitalRoutes);
-// app.use('/medico', medicoRoutes);
 app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
 app.use('/', appRoutes);
