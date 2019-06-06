@@ -18,10 +18,14 @@ app.get('/', (request, response, next) => {
 
     // Populate permite obtener registros de otras tablas
     // se especifican 2 parametros: el primero corresponde a la
-    // tabla y el segundo son los campos que deseas mostrar 
+    // tabla que se quiere relacional y el segundo son los campos que deseas mostrar 
 
+    var desde = request.query.desde || 0;
+    desde = Number(desde);
 
     Hospital.find({})
+        .skip(desde)
+        .limit(5)
         .populate('usuario', 'nombre email')  
         .exec((error, hospitales) => {
 
@@ -33,10 +37,22 @@ app.get('/', (request, response, next) => {
                 });
             }
 
-            // peticion aceptada => OK
-            response.status(200).json({
-                ok: true,
-                hospitales: hospitales  // retorna todos los hospitales
+            Hospital.count({}, (error, conteo) => {
+
+                if (error) {
+                    return response.status(500).json({
+                        ok: false,
+                        mensaje: 'Error contando los hospitales',
+                        errors: error
+                    });
+                }
+
+                 // peticion aceptada => OK
+                response.status(200).json({
+                    ok: true,
+                    hospitales: hospitales,  // retorna todos los hospitales
+                    totalRegistros: conteo
+                });
             });
         });
 });

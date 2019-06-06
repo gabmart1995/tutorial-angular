@@ -18,6 +18,8 @@ var Usuario = require('../models/usuario');
     error. Va dentro de la funcion exec
     En este caso pide a la base de datos que se traiga todos los elementos
     de la base de datos
+
+    Limite actua con un paginador de de la informacion
 */
 
 // ==========================================
@@ -26,7 +28,14 @@ var Usuario = require('../models/usuario');
 
 app.get('/', (request, response, next) => {
 
+   // crea un query desde la URL y le asigna un valor entero
+    var desde = request.query.desde || 0;
+
+    desde = Number(desde);  //parsea el elemento a un numero
+
     Usuario.find({ }, 'nombre email img rol')
+                .skip(desde)  // crea un punto de referencia 
+                .limit(5)  // muestra 5 usuarios por pagina  
                 .exec((error, usuarios) => {
 
                         // falla interna de la BD
@@ -37,12 +46,25 @@ app.get('/', (request, response, next) => {
                                 errors: error // manda el error
                             });
                         }
-                        
-                         // OK => peticion correcta.
-                        return response.status(200).json({
-                            ok: true,
-                            usuarios: usuarios
-                        });
+
+                        // Obtiene el total de los usuarios
+                        Usuario.count({}, (error, conteo) => {
+                            
+                            if (error) {
+                                return response.status(500).json({
+                                    ok: false,
+                                    mensaje: 'Error contando los usuarios',
+                                    errors: error
+                                });
+                            }
+
+                            // OK => peticion correcta.
+                            response.status(200).json({
+                                ok: true,
+                                usuarios: usuarios,
+                                totalRegistros: conteo
+                            });
+                        }); 
                 
                 });
 });
