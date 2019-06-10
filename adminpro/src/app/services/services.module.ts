@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // se importan todos los servicios
-import { 
+import {
   SettingsService,
   SidebarService,
-  SharedService
+  SharedService,
+  UsuarioService
  } from './services.index';
 
 @NgModule({
@@ -16,7 +17,8 @@ import {
   providers: [
     SettingsService,
     SidebarService,
-    SharedService
+    SharedService,
+    UsuarioService
   ]
 })
 export class ServicesModule { }

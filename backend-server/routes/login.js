@@ -92,7 +92,6 @@ app.post('/google', async(request, response) => {
             var usuario = new Usuario();
             
             usuario.nombre = googleUser.nombre;
-            usuario.apellido = ':)';
             usuario.email = googleUser.email;
             usuario.img = googleUser.img;
             usuario.google = googleUser.google;

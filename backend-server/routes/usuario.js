@@ -72,7 +72,6 @@ app.get('/', (request, response, next) => {
 // ==========================================
 //		Actualizar usuario
 // ==========================================
-
 app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
 
     // Params permite obtener la ultima referencia de la direccion url
@@ -101,7 +100,6 @@ app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
 
         //asigna los nuevos valores
         usuario.nombre = body.nombre;
-        usuario.apellido = body.apellido;
         usuario.email = body.email;
         usuario.rol = body.rol; 
 
@@ -133,7 +131,7 @@ app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
 // ==========================================
 
 // se invoca el middleware del autenticacion de la aplicacion
-app.post('/', mdAutenticacion.verificarToken, (request, response) => {
+app.post('/', (request, response) => {
 
     //recibe la informacion del formulario y la almacema en la variable
     var body = request.body;
@@ -141,7 +139,6 @@ app.post('/', mdAutenticacion.verificarToken, (request, response) => {
     // Crea un nuevo registro y encripta la contraseña
     var usuario = new Usuario({
         nombre: body.nombre,
-        apellido: body.apellido,
         email: body.email,
         password:  bcrypt.hashSync(body.password, 10),          
         img: body.img,
