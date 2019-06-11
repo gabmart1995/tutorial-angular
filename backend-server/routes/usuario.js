@@ -25,7 +25,6 @@ var Usuario = require('../models/usuario');
 // ==========================================
 //		Obtiene todos los usuarios
 // ==========================================
-
 app.get('/', (request, response, next) => {
 
    // crea un query desde la URL y le asigna un valor entero
@@ -129,8 +128,6 @@ app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
 // ==========================================
 //		Crear usuario
 // ==========================================
-
-// se invoca el middleware del autenticacion de la aplicacion
 app.post('/', (request, response) => {
 
     //recibe la informacion del formulario y la almacema en la variable

@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// import * as swal from 'sweetalert';
+import { Router } from '@angular/router';
+
+import * as swal from 'sweetalert'; // SweetAlert 2.0.8
 
 // servicios
 import { UsuarioService } from './../services/services.index';
 
+// modelo
+import { Usuario } from '../models/usuario.models';
 
 declare function init_plugins();
 
@@ -17,7 +21,10 @@ export class RegisterComponent implements OnInit {
 
   forma: FormGroup;
 
-  constructor(public _usuarioService: UsuarioService) { }
+  constructor(
+    public _usuarioService: UsuarioService,
+    public router: Router
+    ) { }
 
   ngOnInit() {
     init_plugins();
@@ -54,13 +61,21 @@ export class RegisterComponent implements OnInit {
     }
 
     if (!this.forma.value.condiciones) {
-     //  swal('Importante', 'Debe de aceptar las condiciones', 'warning');
-      console.log('Debe aceptar las condiciones');
+
+      swal('Importante', 'Debes aceptar las condiciones', 'warning');
       return;
     }
 
-    console.log('forma valida:', this.forma.valid);
-    console.log(this.forma.value);
+    // se crea el objeto usuario
+    let usuario = new Usuario(
+      this.forma.value.nombre,
+      this.forma.value.email,
+      this.forma.value.password
+    );
+
+    // llama al observador y se suscribe para redirigir al login
+    this._usuarioService.crearUsuario(usuario)
+      .subscribe(response => this.router.navigate(['/login']));
   }
 
   sonIguales(campo1: string, campo2: string) {

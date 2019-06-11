@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { UsuarioService } from '../services/services.index';
+
+declare function init_plugins();
 
 @Component({
   selector: 'app-login',
@@ -8,14 +12,25 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor( public router: Router) { }
+  recuerdame: boolean = false;
+
+  constructor( 
+    public router: Router,
+    public _usuarioService: UsuarioService
+    ) { }
 
   ngOnInit() {
+    init_plugins(); // carga los plugins de JavaScript
   }
 
-  ingresar() {
+  ingresar(forma: NgForm) {
 
-    this.router.navigate(['/dashboard']);
+    if (forma.invalid) {
+      return;
+    }
+/*
+    console.log(forma.valid);
+    console.log(forma.value);*/
   }
 
 }
