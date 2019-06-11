@@ -43,15 +43,14 @@ export class RegisterComponent implements OnInit {
       condiciones: new FormControl(false)
     }, { validators: this.sonIguales('password', 'password2')});
 
-
-    // establece los valores en el formulario
+    /* Establece los valores del formulario de forma autoamtica
     this.forma.setValue({
       nombre: 'Test',
       email: 'test@test.com',
       password: '123456',
       password2: '123456',
       condiciones: true
-    });
+    }); */
   }
 
   registrarUsuario() {
