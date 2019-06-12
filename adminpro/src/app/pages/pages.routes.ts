@@ -9,8 +9,11 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 
+import { LoginGuardGuard } from '../services/services.index';
+
 const pagesRoutes: Routes = [{
     path : '',
+    canActivate: [LoginGuardGuard],  // aqui se invocan los guards
     component : PagesComponent,
     children : [
         { path : 'dashboard', component : DashboardComponent, data: { titulo : 'Dashboard' } },

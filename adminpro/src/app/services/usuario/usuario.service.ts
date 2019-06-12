@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { URL_SERVICIOS } from './../../config/config';
 
 import { Usuario } from './../../models/usuario.models';
 
 import { map } from 'rxjs/operators';  // importacion correcta del archivo
+
 
 
 @Injectable({
@@ -16,7 +18,44 @@ export class UsuarioService {
   usuario: Usuario;
   token: string;
 
-  constructor(public http: HttpClient) { }
+  constructor(
+      public http: HttpClient,
+      public router: Router
+    ) {
+
+    // carga los datos dentro del navegador
+    this.cargarStorage();
+   }
+
+  // identifica si el usuario esta logueado
+  estaLogueado() {
+    return (this.token.length > 5) ? true : false;
+  }
+
+  // carga el localStorage y lo asigna a la variable
+  cargarStorage() {
+
+    if (localStorage.getItem('token')) {
+      this.token = localStorage.getItem('token');
+      this.usuario = JSON.parse(localStorage.getItem('usuario'));
+    }
+    else {
+      this.token = '';
+      this.usuario = null;
+    }
+  }
+
+  // guarda el usuario en el storage recibe 3 parametros
+  guardarStorage(id: string, token: string, usuario: Usuario) {
+
+    localStorage.setItem('id', id);
+    localStorage.setItem('token', token);
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+
+    // asigna los valores dentro de los valores
+    this.usuario = usuario;
+    this.token = token;
+  }
 
   crearUsuario(usuario: Usuario) {
 
@@ -36,7 +75,15 @@ export class UsuarioService {
 
     // genera la URL y se conecta con el Backend
     let url = URL_SERVICIOS + '/login/google';
-    return this.http.post(url, { token });
+
+    return this.http.post(url, { token }).pipe(
+      map((response: any) => {
+
+        // llama a la fuucion gaurdar storage
+        this.guardarStorage(response.id, response.token, response.usuario);
+        return true;
+      })
+    );
   }
 
   login(usuario: Usuario, recordar: boolean = false) {
@@ -52,29 +99,28 @@ export class UsuarioService {
     // define la URL
     let url = URL_SERVICIOS + '/login';
 
-    // ejecuta el observable
     return this.http.post(url, usuario).pipe(
       map((response: any) => {
 
-        // almacena la informacion en el localstorage (Solo almacena string)
-       /* localStorage.setItem('id', response.id);
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('usuario', JSON.stringify(response.usuario));*/
-
+        // ejecuta la funcion y guarda en el localStorage
+        this.guardarStorage(response.id, response.token, response.usuario);
         return true;
       })
     );
   }
 
-  // guarda el usuario en el storage
-  guardarStorage(id: string, token: string, usuario: Usuario) {
+  // salida del usuario
+  logout() {
 
-    localStorage.setItem('id', id);
-    localStorage.setItem('token', token);
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    // vacia las variables
+    this.usuario = null;
+    this.token = '';
 
-    // asigna los valores
-    this.usuario = usuario;
-    this.token = token;
+    // remueve los elementos por el usuario
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+
+    // redirecciona al login
+    this.router.navigate(['/login']);
   }
 }

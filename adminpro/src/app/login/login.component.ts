@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   // variables
   recuerdame: boolean = false;
   email: string;
+
   auth2: any;  // variable de google
 
   constructor(
@@ -27,7 +28,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     init_plugins(); // carga los plugins de JavaScript
-    this.googleInit(); // ejecuta la verificacion de Google
+
+    // carga los archivos necesarios para el Google Sign In
+    this.googleInit();
 
     this.email = localStorage.getItem('email') || '';
 
@@ -54,16 +57,14 @@ export class LoginComponent implements OnInit {
   attachSignIn(element) {
     this.auth2.attachClickHandler( element, {}, googleUser => {
 
-      // se obtiene el perfil
+      // se obtiene el perfil completo te puede servir
       // let profile = googleUser.getBasicProfile();
 
       let token = googleUser.getAuthResponse().id_token;
 
       // genera la informacion dentro del servidor
       this._usuarioService.loginGoogle(token)
-        .subscribe(response => {
-          console.log(response);
-        });
+        .subscribe( () => window.location.href = '#/dashboard');
     });
   }
 
