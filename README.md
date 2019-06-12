@@ -25,7 +25,7 @@ utilizando el comando:
 npm install
 ```
 
-Para correr el backend-server ejecuta el comando `npm start` 
+Para correr el servidor de la base de datos ejecuta el comando  `sudo service mongod start`  y luego el backend-server ejecuta el comando `npm start`  
 
 ## Dentro de Google-Signin-demo
 
