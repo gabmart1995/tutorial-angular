@@ -21,6 +21,7 @@ import { GraficaDonaComponent } from '../components/grafica-dona/grafica-dona.co
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
         GraficaDonaComponent,
         AccountSettingsComponent,
         PromesasComponent,
-        RxjsComponent
+        RxjsComponent,
+        ProfileComponent
     ],
 
     // aqui se exportan los modulos de la aplicacion.

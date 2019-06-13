@@ -11,6 +11,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 
 import { LoginGuardGuard } from '../services/services.index';
 
+import { ProfileComponent } from './profile/profile.component';
+
 const pagesRoutes: Routes = [{
     path : '',
     canActivate: [LoginGuardGuard],  // aqui se invocan los guards
@@ -22,6 +24,7 @@ const pagesRoutes: Routes = [{
         { path: 'account-settings', component: AccountSettingsComponent, data: { titulo : 'Personalizacion' } },
         { path: 'promesas', component: PromesasComponent, data: { titulo : 'Promesas' } }, // promesas
         { path: 'rxjs', component: RxjsComponent, data: { titulo : 'Observables' } },
+        { path: 'perfil', component: ProfileComponent, data: { titulo: 'Perfil de usuario' } },
         { path: '', redirectTo: '/dashboard', pathMatch: 'full' } // cuando no existe ninguna ruta va a redireccionar.
     ]
 }];
