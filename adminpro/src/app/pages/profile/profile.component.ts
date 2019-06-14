@@ -16,16 +16,24 @@ export class ProfileComponent implements OnInit {
   ) {
 
     // construye la vista con los datos del usuario
-    this.usuario = this._usuarioServices.usuario;
+    this.usuario = _usuarioServices.usuario;
   }
 
   ngOnInit() {
   }
 
   guardar(usuario: Usuario) {
-    
+
     this.usuario.nombre = usuario.nombre;
-    this.usuario.email = usuario.email;  //6:54
+
+    // si el usuario es de google cambia el email
+    if (!this.usuario.google) {
+      this.usuario.email = usuario.email;
+    }
+
+    // llama al servicio
+    this._usuarioServices.actualizarUsuario(this.usuario)
+      .subscribe();
   }
 
 }

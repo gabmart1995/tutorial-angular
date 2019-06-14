@@ -71,6 +71,23 @@ export class UsuarioService {
     );
   }
 
+  actualizarUsuario(usuario: Usuario) {
+
+    // se arma la url
+    let url = URL_SERVICIOS + '/usuario/' + usuario._id;
+    url += '?token=' + this.token;
+
+    return this.http.patch(url, usuario).pipe(
+      map((response: any) => {
+
+        this.guardarStorage(response.usuario._id, this.token, usuario);
+        swal('Usuario actualizado', usuario.nombre, 'success');
+
+        return true;
+      })
+    );
+  }
+
   loginGoogle(token: string) {
 
     // genera la URL y se conecta con el Backend
