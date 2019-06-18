@@ -32,7 +32,7 @@ app.get('/', (request, response, next) => {
 
     desde = Number(desde);  //parsea el elemento a un numero
 
-    Usuario.find({ }, 'nombre email img rol')
+    Usuario.find({ }, 'nombre email img rol google')
                 .skip(desde)  // crea un punto de referencia 
                 .limit(5)  // muestra 5 usuarios por pagina  
                 .exec((error, usuarios) => {

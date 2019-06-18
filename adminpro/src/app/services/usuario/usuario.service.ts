@@ -159,4 +159,11 @@ export class UsuarioService {
         console.log(response);
       });
   }
+
+  cargarUsuarios(desde: number = 0) {
+
+    let url = URL_SERVICIOS + '/usuario?desde=' + desde;
+
+    return this.http.get(url);
+  }
 }

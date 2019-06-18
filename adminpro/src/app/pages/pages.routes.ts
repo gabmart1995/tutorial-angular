@@ -12,6 +12,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 import { LoginGuardGuard } from '../services/services.index';
 
 import { ProfileComponent } from './profile/profile.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 
 const pagesRoutes: Routes = [{
     path : '',
@@ -25,7 +26,10 @@ const pagesRoutes: Routes = [{
         { path: 'promesas', component: PromesasComponent, data: { titulo : 'Promesas' } }, // promesas
         { path: 'rxjs', component: RxjsComponent, data: { titulo : 'Observables' } },
         { path: 'perfil', component: ProfileComponent, data: { titulo: 'Perfil de usuario' } },
-        { path: '', redirectTo: '/dashboard', pathMatch: 'full' } // cuando no existe ninguna ruta va a redireccionar.
+        { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // cuando no existe ninguna ruta va a redireccionar.
+
+        // mantenimiento
+        { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Mantenimiento de usuarios' } }
     ]
 }];
 

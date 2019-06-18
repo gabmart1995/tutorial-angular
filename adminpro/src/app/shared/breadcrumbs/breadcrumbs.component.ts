@@ -10,7 +10,7 @@ import { Title, Meta, MetaDefinition } from '@angular/platform-browser';
 })
 export class BreadcrumbsComponent implements OnInit {
 
-  //titulo de la pagina
+  // titulo de la pagina
   titulo: string;
 
   constructor( private router: Router, private title: Title,
