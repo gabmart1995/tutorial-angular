@@ -6,6 +6,7 @@ import { URL_SERVICIOS } from './../../config/config';
 import { Usuario } from './../../models/usuario.models';
 
 import { map } from 'rxjs/operators';  // importacion correcta del archivo
+import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 
 
 
@@ -20,7 +21,8 @@ export class UsuarioService {
 
   constructor(
       public http: HttpClient,
-      public router: Router
+      public router: Router,
+      public _subirArchivoSevice: SubirArchivoService
     ) {
 
     // carga los datos dentro del navegador
@@ -139,5 +141,22 @@ export class UsuarioService {
 
     // redirecciona al login
     this.router.navigate(['/login']);
+  }
+
+  cambiarImagen(archivo: File, id: string) {
+
+    this._subirArchivoSevice.subirArchivo(archivo, 'usuarios', id)
+      .then((response: any) => {
+
+        // cambia la imagen del usuario
+        this.usuario.img = response.usuario.img;
+        swal('Imagen actualizada', this.usuario.nombre, 'success');
+
+        // actualiza el storage
+        this.guardarStorage(id, this.token, this.usuario);
+      })
+      .catch(response => {
+        console.log(response);
+      });
   }
 }
