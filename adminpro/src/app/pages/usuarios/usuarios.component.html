@@ -27,7 +27,7 @@
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>Imagen:</th>
+              <th>Imagen</th>
               <th>Correo:</th>
               <th>Nombre:</th>
               <th>Role:</th>
@@ -39,16 +39,17 @@
             <tr *ngFor="let usuario of usuarios">
               <td></td>
               <td>{{ usuario.email }}</td>
-              <td><{{ usuario.nombre }}/td>
+              <td>{{ usuario.nombre }}</td>
               <td>{{ usuario.rol }}</td>
               <td>
                 <label for="" class="label label-danger">Google</label>
-                <label for="" class="label label-primary">Normal</label>
+                <label for="" class="label label-info">Normal</label>
               </td>
               <td>
                 <button class="btn btn-primary">
                   <i class="fa fa-save"></i>
                 </button>
+
                 <button class="btn btn-danger">
                   <i class="fa fa-trash-o"></i>
                 </button>
@@ -57,8 +58,8 @@
           </tbody>
         </table>
 
-        <button class="btn btn-secondary">Anteriores</button>
-        <button class="btn btn-secondary">Siguientes</button>
+        <button (click)="cambiarDesde(-5)" class="btn btn-secondary">Anteriores</button>
+        <button (click)="cambiarDesde(5)" class="btn btn-secondary">Siguientes</button>
       </div>
     </div>
   </div>
