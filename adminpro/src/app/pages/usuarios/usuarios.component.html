@@ -2,13 +2,17 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input #input type="text" class="form-control" placeholder="Buscar usuario ...">
+        <input #input (keyup)="buscarUsuario( input.value )" 
+          type="text" 
+          class="form-control" 
+          placeholder="Buscar usuario ..."
+        >
       </div>
     </div>
   </div>
 </div>
 
-<div class="row animated fadeIn">
+<div class="row animated fadeIn" *ngIf="cargando">
   <div class="col-12">
     <div class="alert alert-warning text-center">
       <strong>Cargando</strong> <br>
@@ -18,7 +22,7 @@
   </div>
 </div>
 
-<div class="row animated fadeIn">
+<div class="row animated fadeIn" *ngIf="!cargando">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -37,20 +41,22 @@
           </thead>
           <tbody>
             <tr *ngFor="let usuario of usuarios">
-              <td></td>
+              <td class="w70">
+                <img [src]="usuario.img | imagen" class="img-50 img-circle">
+              </td>
               <td>{{ usuario.email }}</td>
               <td>{{ usuario.nombre }}</td>
               <td>{{ usuario.rol }}</td>
               <td>
-                <label for="" class="label label-danger">Google</label>
-                <label for="" class="label label-info">Normal</label>
+                <label *ngIf="usuario.google" class="label label-danger">Google</label>
+                <label *ngIf="!usuario.google" class="label label-info">Normal</label>
               </td>
               <td>
                 <button class="btn btn-primary">
                   <i class="fa fa-save"></i>
                 </button>
 
-                <button class="btn btn-danger">
+                <button class="btn btn-danger" (click)="borrarUsuario( usuario )">
                   <i class="fa fa-trash-o"></i>
                 </button>
               </td>

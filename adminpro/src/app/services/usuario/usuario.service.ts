@@ -166,4 +166,29 @@ export class UsuarioService {
 
     return this.http.get(url);
   }
+
+  // funcion que ayuda a buscar los usuario
+  buscarUsuarios( termino: string ) {
+
+    let url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
+
+    return this.http.get( url )
+      .pipe(
+        map((response: any) => response.usuarios )
+      );
+  }
+
+  borrarUsuario( id: string ) {
+
+    let url = URL_SERVICIOS + '/usuario/' + id;
+    url += '?token=' + this.token;
+
+    return this.http.delete( url )
+      .pipe(
+        map( response => {
+          swal( 'Usuario Borrado', 'El usuario ha sido eliminado correctamente', 'success' );
+          return true;
+        })
+    );
+  }
 }
