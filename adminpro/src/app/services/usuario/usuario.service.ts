@@ -82,10 +82,14 @@ export class UsuarioService {
     return this.http.patch(url, usuario).pipe(
       map((response: any) => {
 
-        this.guardarStorage(response.usuario._id, this.token, usuario);
-        swal('Usuario actualizado', usuario.nombre, 'success');
+        if ( usuario._id === this.usuario._id ) {
+          let usuarioDB: Usuario = response.usuario;
+          this.guardarStorage(usuarioDB._id, this.token, usuarioDB);
+        }
 
+        swal('Usuario actualizado', usuario.nombre, 'success');
         return true;
+        
       })
     );
   }
