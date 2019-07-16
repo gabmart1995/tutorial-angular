@@ -16,7 +16,7 @@ var Hospital = require('./../models/hospital');
 
 app.get('/', (request, response, next) => {
 
-    // Populate permite obtener registros de otras tablas
+    // Populate permite obtener registros de las tablas
     // se especifican 2 parametros: el primero corresponde a la
     // tabla que se quiere relacional y el segundo son los campos que deseas mostrar 
 
@@ -57,6 +57,39 @@ app.get('/', (request, response, next) => {
         });
 });
 
+// ==========================================
+//		Obtener Hospital por ID
+// ==========================================
+app.get('/:id', ( request, response ) => {
+
+    var id = request.params.id;
+
+    Hospital.findById( id )
+        .populate( 'hospital', 'nombre img' )
+        .exec( ( error, hospital ) => {
+
+            if ( error ) {
+                return response.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al buscar hospital',
+                    errors: error
+                });
+            }
+
+            if ( !hospital ) {
+                return response.status(400).json({
+                    ok: false,
+                    mensaje: 'El hospital con el id: ' + id + ' no existe',
+                    errors: { message: 'No existe un hospital con ese ID' }
+                });
+            }
+
+            response.status(200).json({
+                ok: true,
+                hospital: hospital
+            });
+        });
+})
 
 // ==========================================
 //		Crea un registro del hospital

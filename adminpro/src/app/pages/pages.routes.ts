@@ -13,6 +13,7 @@ import { LoginGuardGuard } from '../services/services.index';
 
 import { ProfileComponent } from './profile/profile.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { HospitalesComponent } from './hospitales/hospitales.component';
 
 const pagesRoutes: Routes = [{
     path : '',
@@ -29,7 +30,9 @@ const pagesRoutes: Routes = [{
         { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // cuando no existe ninguna ruta va a redireccionar.
 
         // mantenimiento
-        { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Mantenimiento de usuarios' } }
+        { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Mantenimiento de usuarios' } },
+        { path: 'hospitales', component: HospitalesComponent, data: { titulo: 'Mantenimiento de hospitales' } }
+
     ]
 }];
 

@@ -57,7 +57,7 @@ export class UsuariosComponent implements OnInit {
       // toma el valor actual y lo suma
       let desde = this.desde + valor;
 
-      console.log(desde);
+      console.log( desde );
 
       // validacion del total de usuarios
       if (desde >= this.totalUsuarios) {
@@ -84,6 +84,7 @@ export class UsuariosComponent implements OnInit {
 
     this._usuarioService.buscarUsuarios( termino )
     .subscribe( (usuarios: Usuario[]) => {
+      
       this.usuarios = usuarios;
       this.cargando = false;
     });
@@ -119,6 +120,7 @@ export class UsuariosComponent implements OnInit {
   }
 
     guardarUsuario( usuario: Usuario ) {
+
       this._usuarioService.actualizarUsuario( usuario )
         .subscribe();
   }
