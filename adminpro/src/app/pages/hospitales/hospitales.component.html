@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input 
+        <input #input (keyup)="buscarHospital( input.value )"
           type="text"
           class="form-control"
           placeholder="buscar hospital ..."
@@ -29,11 +29,13 @@
           
         <div class="row">
             <div class="col-6">
-              <h3 class="card-title"> Hospitales Registrados ( <small> {{ totalHospitales }} </small>  ) </h3>
+              <h3 class="card-title"> 
+                Hospitales Registrados ( <small> {{ _hospitalService.totalHospitales }} </small>  ) 
+              </h3>
             </div>
             <div class="col-6 text-right">
-              <button class="btn btn-primary">
-                <i class=""></i>
+              <button class="btn waves-effect waves-light btn-rounded btn-primary" (click)="crearHospital()">
+                <i class="fa fa-plus pr-1"></i>
                 Crear hospital
               </button>
             </div>
@@ -44,18 +46,22 @@
               <tr>
                 <th>Foto:</th>
                 <th>Hospital:</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let hospital of hospitales">
                 <td class="w-70">
-                  <img [src]="hospital.img | imagen" class="img-50 img-circle pointer">
+                  <img [src]="hospital.img | imagen: 'hospital'" 
+                    class="img-50 pointer" 
+                    (click)="actualizarImagen( hospital )"
+                  >
                 </td>
                 <td>
-                  <input #formHospital class="form-control" type="text" [value]="hospital.nombre">
+                  <input [(ngModel)]="hospital.nombre" type="text" class="form-control" placeholder="nombre del hospital ...">
                 </td>
                 <td>
-                    <button class="btn btn-primary" (click)="guardarHospital( hospital, formHospital.value )">
+                    <button class="btn btn-primary" (click)="guardarHospital( hospital )">
                       <i class="fa fa-save"></i>
                     </button>
       

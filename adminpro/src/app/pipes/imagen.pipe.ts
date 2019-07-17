@@ -21,6 +21,7 @@ export class ImagenPipe implements PipeTransform {
 
     // pregunta por el tipo de imagen
     switch (tipo) {
+      
       case 'usuario':
         url += '/usuarios/' + img;
         break;

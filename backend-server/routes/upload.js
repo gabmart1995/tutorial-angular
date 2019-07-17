@@ -74,7 +74,7 @@ app.patch('/:tipo/:id', (request, response, next) => {
         }
 
         // ejecuta la subida del archivo
-        subirPorTipo(tipo, id, nombreArchivo, response);
+       subirPorTipo(tipo, id, nombreArchivo, response);
 
     }); 
 });

@@ -6,31 +6,37 @@ import { map } from 'rxjs/operators';
 
 import { URL_SERVICIOS } from './../../config/config';
 import { Hospital } from '../../models/hospital.models';
+import { UsuarioService } from '../usuario/usuario.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HospitalService {
 
-  token: string;
   hospital: Hospital;
+
+  totalHospitales: number = 0;
 
   constructor(
     public http: HttpClient,
     public _subirArchivoService: SubirArchivoService,
     public _router: Router,
+    public _usuarioService: UsuarioService
   ) { }
-
-  obtenerTokenUsuario() {
-    this.token = localStorage.getItem( 'token' );
-  }
 
   cargarHospitales( desde: number = 0 ) {
 
     let url = URL_SERVICIOS + '/hospital/?desde=' + desde;
 
     // retorna los datos
-    return this.http.get( url );
+    return this.http.get( url ).pipe(
+      map( ( response: any ) => {
+
+        this.totalHospitales = response.totalRegistros;
+        return response.hospitales;
+
+      })
+    );
   }
 
   obtenerHospital( id: string ) {
@@ -46,23 +52,19 @@ export class HospitalService {
   borrarHospital( id: string ) {
 
     let url = URL_SERVICIOS + '/hospital/' + id;
+    url += '?token=' + this._usuarioService.token;
 
     return this.http.delete( url ).pipe(
-      map( ( response: any) =>  response.hospital )
+      map( ( response ) => swal('Hospital borrado', 'eliminado correctamente', 'success' ) )
     );
   }
 
-  crearHospital( hospital: Hospital ) {
+  crearHospital( nombre: string ) {
 
-    let url =  URL_SERVICIOS + '/hospital/?token=' + this.token;
+    let url =  URL_SERVICIOS + '/hospital/?token=' + this._usuarioService.token;
 
-    return this.http.post( url, hospital ).pipe(
-        map( (response: any) => {
-
-          swal('Hospital Creado', hospital.nombre, 'success');
-          return response.hospital;
-
-        })
+    return this.http.post( url, { nombre } ).pipe(
+        map( ( response: any ) =>  response.hospital )
       );
   }
 
@@ -78,16 +80,17 @@ export class HospitalService {
   actualizarHospital( hospital: Hospital )  {
 
     let url = URL_SERVICIOS + '/hospital/' + hospital._id;
-    url += '?token=' + this.token;
+    url += '?token=' + this._usuarioService.token;
 
     return this.http.patch( url, hospital )
       .pipe( map( (response: any) => {
 
-          swal('hospital actualizado', hospital.nombre, 'success');
-          return true;
+        swal( 'Hospital Actualizado', hospital.nombre, 'success' );
+        return response.hospital;
+      })
 
-      }) );
+      );
   }
 
-  
+
 }

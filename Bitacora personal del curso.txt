@@ -1,0 +1,47 @@
+BITACORA PERSONAL DE SOLUCION DE PROBLEMAS INTERNOS  (Distribuciones LINUX)
+Autor: Gabriel Martinez
+
+17-07-17: Se presento un problema con el servidor NodeJS nodemon en el servicio de la carga de imagenes.
+
+ERROR MOSTRADO EN LA TERMINAL:
+
+[nodemon] Internal watch failed: ENOSPC: System limit for number of file watchers reached, watch '/home/marcos/Documentos/Documentacion Gabriel/tutorial-angular/backend-server/uploads/hospitales/5d2df3cfbed998139220b7c8-254.png'
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! backend-server@1.0.0 start: `nodemon app.js`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the backend-server@1.0.0 start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/marcos/.npm/_logs/2019-07-17T19_28_51_296Z-debug.log
+
+EXPLICACION:
+
+Este error se debe el servicio (inotify) alcanzo el limite de observadores recibidos para monitorizar el sistema de archivos,
+y no permite la movilizacion de los archivos en el direcotrio destino y nodemon muestra la falla.
+
+PASOS:
+
+1.- Consultar los observadores con el siguiente comando:
+
+    $ cat /proc/sys/fs/inotify/max_user_watches
+    
+    Este comando permite ver el numero de observadores por defecto son (8192), la clave es aumentar el numero de 
+    kernel asignado a la aplicacion.
+
+2.- Para solucionar el problema ingresa el siguiente comando
+
+    # echo fs.inotify.max_user_watches=582222 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p  -> ubuntu o debian
+
+    # echo fs.inotify.max_user_watches=582222 | sudo tee -a /etc/sysctl.conf  -> archLinux
+    # sysctl -p
+
+3.- Reinicia el equipo
+
+Nota adicional: para mas informacion consulta: 
+https://stackoverflow.com/questions/22475849/node-js-what-is-enospc-error-and-how-to-solve/32600959#32600959
+https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers#the-technical-details
+https://web.archive.org/web/20161106193425/http://blog.sorah.jp/2012/01/24/inotify-limitation
+

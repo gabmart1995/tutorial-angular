@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../models/usuario.models';
-import { UsuarioService } from '../../services/services.index';
-import { ModalUploadService } from 'src/app/components/modal-upload/modal-upload.service';
+import {
+  UsuarioService,
+  ModalUploadService
+} from '../../services/services.index';
 
 declare var swal: any;
 
@@ -112,7 +114,6 @@ export class UsuariosComponent implements OnInit {
       if ( borrar ) {
         this._usuarioService.borrarUsuario( usuario._id )
           .subscribe( (response: boolean) => {
-            console.log( response );
             this.cargarUsuarios();
           });
       }

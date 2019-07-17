@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { SubirArchivoService } from 'src/app/services/services.index';
-import { ModalUploadService } from './modal-upload.service';
+import {
+  SubirArchivoService,
+  ModalUploadService
+} from '../../services/services.index';
 
 @Component({
   selector: 'app-modal-upload',

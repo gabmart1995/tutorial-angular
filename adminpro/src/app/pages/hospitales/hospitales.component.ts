@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HospitalService } from '../../services/services.index';
 import { Hospital } from '../../models/hospital.models';
+import {
+  HospitalService,
+  ModalUploadService
+} from '../../services/services.index';
+
+declare var swal: any;  // incluye esta linea para dar funcionalidad al elemento Sweetalert
 
 @Component({
   selector: 'app-hospitales',
@@ -10,19 +15,21 @@ import { Hospital } from '../../models/hospital.models';
 export class HospitalesComponent implements OnInit {
 
   hospitales: Hospital[] = [];
-
   desde: number = 0;
-  totalHospitales: number;
+
 
   cargando: boolean = true;
 
   constructor(
-    private _hospitalService: HospitalService
+    private _hospitalService: HospitalService,
+    public _modalUploadService: ModalUploadService
   ) { }
 
   ngOnInit() {
-    this._hospitalService.obtenerTokenUsuario();
     this.cargarHospitales();
+
+    this._modalUploadService.notificacion
+      .subscribe( () => this.cargarHospitales() );
   }
 
   cargarHospitales() {
@@ -30,20 +37,30 @@ export class HospitalesComponent implements OnInit {
     this.cargando = true;
 
     this._hospitalService.cargarHospitales( this.desde )
-      .subscribe( (response: any) => {
+      .subscribe( (hospitales: any) => {
 
-          this.totalHospitales = response.totalRegistros;
-          this.hospitales = response.hospitales;
+          this.hospitales = hospitales;
           this.cargando = false;
 
       });
+  }
+
+  buscarHospital( termino: string ) {
+
+    if ( termino.length <= 0  ) {
+      this.cargarHospitales();
+      return;
+    }
+
+    this._hospitalService.buscarHospital( termino )
+      .subscribe(  hospitales  => this.hospitales = hospitales );
   }
 
   cambiarDesde( valor: number ) {
 
     let desde = this.desde + valor;
 
-    if ( desde >= this.totalHospitales ) {
+    if ( desde >= this._hospitalService.totalHospitales ) {
       return;
     }
 
@@ -57,9 +74,7 @@ export class HospitalesComponent implements OnInit {
 
   }
 
-  guardarHospital( hospital: Hospital, valor: string ) {
-
-    hospital.nombre = valor; // asigna el valor del formulario al objeto
+  guardarHospital( hospital: Hospital ) {
 
     this._hospitalService.actualizarHospital( hospital )
       .subscribe();
@@ -67,22 +82,34 @@ export class HospitalesComponent implements OnInit {
 
   borrarHospital( hospital: Hospital ) {
 
-   /* swal({
-      title: '¿Esta seguro?',
-      text: 'Esta a punto de borrar a: ' + hospital.nombre,
-      icon: 'Warning',
-      dangerMode: true
-    }).then( borrar => {
+    this._hospitalService.borrarHospital( hospital._id )
+      .subscribe( () => this.cargarHospitales()  );
 
-        console.log( borrar );
+  }
+  crearHospital() {
 
-        if ( borrar ) {
-          this._hospitalService.borrarHospital( hospital._id )
-            .subscribe( (response: boolean) => {
-              console.log( response );
-              this.cargarHospitales();
-            });
-        }
-      });*/
+    // SweetAlert Input
+    swal({
+      title: 'Crear hospital',
+      text: 'Ingrese el nombre del hospital',
+      content: 'input',
+      icon: 'info',
+      buttons: true,
+    })
+    .then( ( valor: string )  => {
+
+      if ( !valor || valor.length <= 0 ) {
+        return;
+      }
+
+      this._hospitalService.crearHospital( valor )
+        .subscribe( () => this.cargarHospitales() );
+
+    });
+  }
+
+  actualizarImagen( hospital: Hospital ) {
+
+    this._modalUploadService.mostrarModal( 'hospitales', hospital._id );
   }
 }

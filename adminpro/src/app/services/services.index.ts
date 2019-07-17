@@ -5,6 +5,7 @@ export { SidebarService } from './shared/sidebar.service';
 export { UsuarioService } from './usuario/usuario.service';
 export { SubirArchivoService } from './subir-archivo/subir-archivo.service';
 export { HospitalService } from './hospital/hospital.service';
+export { ModalUploadService } from './modal-upload/modal-upload.service';
 
 // Guards
 export { LoginGuardGuard } from './guards/login-guard.guard';
