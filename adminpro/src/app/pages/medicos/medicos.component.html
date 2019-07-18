@@ -24,7 +24,7 @@
                   </h3>
                 </div>
                 <div class="col-6 text-right">
-                  <button class="btn waves-effect waves-light btn-rounded btn-primary" (click)="crearMedico()">
+                  <button class="btn waves-effect waves-light btn-rounded btn-primary" [routerLink]="[ '/medico','nuevo' ]">
                     <i class="fa fa-plus pr-1"></i>
                     Crear medico
                   </button>
@@ -52,10 +52,10 @@
                       {{ medico.nombre }}
                     </td>
                     <td>
-                       <!--  {{ medico.hospital.nombre }} -->
+                       {{ medico.hospital.nombre }}
                     </td>
                     <td>
-                        <button class="btn btn-primary" (click)="editarMedico( medico )">
+                        <button class="btn btn-primary" [routerLink]="[ '/medico', medico._id ]">
                           <i class="fa fa-edit"></i>
                         </button>
           

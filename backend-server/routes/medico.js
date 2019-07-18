@@ -87,6 +87,43 @@ app.post('/', mdAutenticacion.verificarToken, (request, response) => {
     });
 });
 
+// ==========================================
+//		Obtener medico
+// ==========================================
+
+app.get('/:id', ( request, response ) => {
+
+    var id = request.params.id;
+    
+    Medico.findById( id )
+        .populate('usuario', 'nombre email img')
+        .populate('hospital')
+        .exec( (error, medico) => {
+
+            //verifica si esta en la BD
+            if (error) {
+                return response.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al buscar al medico',
+                    errors: error
+                });
+            }
+
+            // si no existe el registro
+            if (!medico) {
+                return response.status(400).json({
+                    ok: false,
+                    mensaje: 'El medico con el id: ' + id + ' no existe.',
+                    error: { message: 'no existe un medico con ese ID' }
+                });
+            }
+
+            response.status(200).json({
+                ok: true,
+                medico: medico
+            });
+        });
+});
 
 // ==========================================
 //		Actualiza el registro
