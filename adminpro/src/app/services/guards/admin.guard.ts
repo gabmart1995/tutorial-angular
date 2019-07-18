@@ -2,27 +2,33 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { UsuarioService } from '../usuario/usuario.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuardGuard implements CanActivate {
-
+export class AdminGuard implements CanActivate {
+  
   constructor(
     public _usuarioService: UsuarioService,
-    public router: Router
-    ) { }
+  ) {
+
+  }
 
   canActivate() {
+    
+    if ( this._usuarioService.usuario.rol  === 'ADMIN_ROLE' ) {
 
-    if (this._usuarioService.estaLogueado()) {
       return true;
+
     }
+
     else {
 
-      // muestra el mensaje y redirecciona al login
-      this.router.navigate(['/login']);
+      // saca al usuario de la aplicacion
+      this._usuarioService.logout();
       return false;
     }
+
+
   }
+  
 }

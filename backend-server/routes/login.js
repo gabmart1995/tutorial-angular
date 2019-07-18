@@ -83,7 +83,8 @@ app.post('/google', async(request, response) => {
                     ok: true,
                     usuario: usuarioBD,
                     token: token,
-                    id: usuarioBD._id  // envia el id
+                    id: usuarioBD._id,  // envia el id
+                    menu: obtenerMenu( usuarioBD.rol )
                 });
             }
         }
@@ -115,19 +116,12 @@ app.post('/google', async(request, response) => {
                     ok: true,
                     usuario: usuarioBD,
                     token: token,
-                    id: usuarioBD._id  // envia el id
+                    id: usuarioBD._id,  // envia el id
+                    menu: obtenerMenu( usuarioBD.rol )
                 });
             });
         }
     });
-    
-
-
-  /*  response.status(200).json({
-        ok: true,
-        mensaje: 'OK!!',
-        googleUser: googleUser,
-    });*/
 });
 
 
@@ -180,9 +174,50 @@ app.post('/', (request, response) => {
             ok: true,
             usuario: usuarioBD,
             token: token,
-            id: usuarioBD._id  // envia el id
+            id: usuarioBD._id,  // envia el id
+            menu: obtenerMenu( usuarioBD.rol )
         });
     });
 });
+
+// ==========================================
+//		Obtener Menu
+// ==========================================
+
+function obtenerMenu( ROLE ) {
+
+    var menu = [
+        {
+          titulo: 'Principal',
+          icono: 'mdi mdi-gauge',
+          submenu: [
+            { titulo: 'Dashboard', url: '/dashboard' },
+            { titulo: 'ProgressBar', url: '/progress' },
+            { titulo: 'Graficas', url: '/graficas1' },
+            { titulo: 'Promesas', url: '/promesas'},
+            { titulo: 'Rxjs', url: '/rxjs'}
+          ]
+        },
+        {
+          titulo: 'Mantenimientos',
+          icono: 'mdi mdi-folder-lock-open',
+          submenu: [
+
+            { titulo: 'Hospitales', url: '/hospitales' },
+            { titulo: 'Medicos', url: '/medicos' }
+          ]
+        }
+      ]; 
+
+    if ( ROLE === 'ADMIN_ROLE' ) {
+        
+        // unshift: coloca un elemento al principio del arreglo
+        menu[1].submenu.unshift( { titulo: 'Usuarios', url: '/usuarios' } ); 
+
+    }
+    
+    return menu;
+    
+}
 
 module.exports = app;

@@ -18,6 +18,7 @@ export class UsuarioService {
   // variables que me indican si esta logueado
   usuario: Usuario;
   token: string;
+  menu: any = [];
 
   constructor(
       public http: HttpClient,
@@ -38,25 +39,33 @@ export class UsuarioService {
   cargarStorage() {
 
     if (localStorage.getItem('token')) {
+
       this.token = localStorage.getItem('token');
       this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      this.menu = JSON.parse( localStorage.getItem( 'menu' ) );
+
     }
     else {
+
       this.token = '';
       this.usuario = null;
+      this.menu = [];
     }
   }
 
   // guarda el usuario en el storage recibe 3 parametros
-  guardarStorage(id: string, token: string, usuario: Usuario) {
+  guardarStorage(id: string, token: string, usuario: Usuario, menu: any) {
 
     localStorage.setItem('id', id);
     localStorage.setItem('token', token);
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('usuario', JSON.stringify( usuario ));
+    localStorage.setItem('menu', JSON.stringify( menu ));
 
     // asigna los valores dentro de los valores
     this.usuario = usuario;
     this.token = token;
+    this.menu = menu;
+
   }
 
   crearUsuario(usuario: Usuario) {
@@ -83,13 +92,19 @@ export class UsuarioService {
       map((response: any) => {
 
         if ( usuario._id === this.usuario._id ) {
+
           let usuarioDB: Usuario = response.usuario;
-          this.guardarStorage(usuarioDB._id, this.token, usuarioDB);
+
+          this.guardarStorage(
+            usuarioDB._id,
+            this.token,
+            usuarioDB,
+            this.menu );
         }
 
         swal('Usuario actualizado', usuario.nombre, 'success');
         return true;
-        
+
       })
     );
   }
@@ -103,7 +118,12 @@ export class UsuarioService {
       map((response: any) => {
 
         // llama a la fuucion gaurdar storage
-        this.guardarStorage(response.id, response.token, response.usuario);
+        this.guardarStorage(
+          response.id,
+          response.token,
+          response.usuario,
+          response.menu );
+
         return true;
       })
     );
@@ -126,7 +146,12 @@ export class UsuarioService {
       map((response: any) => {
 
         // ejecuta la funcion y guarda en el localStorage
-        this.guardarStorage(response.id, response.token, response.usuario);
+        this.guardarStorage(
+          response.id,
+          response.token,
+          response.usuario,
+          response.menu );
+
         return true;
       })
     );
@@ -138,10 +163,12 @@ export class UsuarioService {
     // vacia las variables
     this.usuario = null;
     this.token = '';
+    this.menu = [];
 
     // remueve los elementos por el usuario
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
+    localStorage.removeItem( 'menu' );
 
     // redirecciona al login
     this.router.navigate(['/login']);
@@ -157,7 +184,7 @@ export class UsuarioService {
         swal('Imagen actualizada', this.usuario.nombre, 'success');
 
         // actualiza el storage
-        this.guardarStorage(id, this.token, this.usuario);
+        this.guardarStorage( id, this.token, this.usuario, this.menu );
       })
       .catch(response => {
         console.log(response);
