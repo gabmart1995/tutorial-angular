@@ -45,3 +45,32 @@ https://stackoverflow.com/questions/22475849/node-js-what-is-enospc-error-and-ho
 https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers#the-technical-details
 https://web.archive.org/web/20161106193425/http://blog.sorah.jp/2012/01/24/inotify-limitation
 
+
+22-07-17: (Observacion) Actualizacion de las libreria de RXJS en el desarrollo de observables:
+
+Descripcion: En el desarrollo de las observables se vieron varias actualizaciones:
+
+1.- El operador map ahora se incluira como un parametro de la funcion pipe(), este obsevable se utilizara 
+como un parametro dentro de la mismo.
+
+2.- El operador catch se actualiza => catchError permite crear otro observable que permite el manejo de los errores
+dentro de la aplicacion
+
+    Se importan de la siguiente manera:
+
+    import { map, catchError } from 'rxjs/operators'
+
+3.- El metodo throw cambia su estructura sino que ya es un observable directamente lo que debes es inportar:
+
+    import { throwError } from 'rxjs';
+
+Asegurate de retornar esa funcion porque se mostrara un error.
+
+Para mas informacion consulta:
+https://stackoverflow.com/questions/50602511/typeerror-rxjs-webpack-imported-module-2-observable-throw-is-not-a-function/50841287
+
+
+
+
+
+

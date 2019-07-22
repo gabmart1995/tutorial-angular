@@ -5,7 +5,9 @@ import { URL_SERVICIOS } from './../../config/config';
 
 import { Usuario } from './../../models/usuario.models';
 
-import { map } from 'rxjs/operators';  // importacion correcta del archivo
+import { throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';  // importacion correcta del archivo
+
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 
 
@@ -78,7 +80,13 @@ export class UsuarioService {
       map((response: any) => {
         swal('Usuario Creado', usuario.email, 'success');
         return response.usuario;
+      }),
+
+      catchError( error => {
+        swal( error.error.mensaje, error.error.errors.message, 'error' );
+        return throwError( error );
       })
+
     );
   }
 
@@ -105,6 +113,11 @@ export class UsuarioService {
         swal('Usuario actualizado', usuario.nombre, 'success');
         return true;
 
+      }),
+
+      catchError( error => {
+        swal( error.error.mensaje, error.error.errors.message, 'error' );
+        return throwError( error );
       })
     );
   }
@@ -153,7 +166,13 @@ export class UsuarioService {
           response.menu );
 
         return true;
+      }),
+
+      catchError( error => {
+        swal( 'Error en el login', error.error.mensaje, 'error' );
+        return throwError( error );
       })
+
     );
   }
 

@@ -146,7 +146,7 @@ app.post('/', (request, response) => {
         if (!usuarioBD) {
             return response.status(400).json({
                 ok: false,
-                mensaje: 'credenciales incorrectas - email',
+                mensaje: 'credenciales incorrectas',
                 errors: error
             }); 
         }
@@ -155,7 +155,7 @@ app.post('/', (request, response) => {
         if (!bcrypt.compareSync(body.password, usuarioBD.password)) {
             return response.status(400).json({
                 ok: false,
-                mensaje: 'credenciales incorrectas - password',
+                mensaje: 'credenciales incorrectas',
                 errors: error
             }); 
         }

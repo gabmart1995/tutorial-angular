@@ -71,7 +71,7 @@ app.get('/', (request, response, next) => {
 // ==========================================
 //		Actualizar usuario
 // ==========================================
-app.patch('/:id', mdAutenticacion.verificarToken, (request, response) => {
+app.patch('/:id', [ mdAutenticacion.verificarToken, mdAutenticacion.verificarADMIN_MismoUsuario ], (request, response) => {
 
     // Params permite obtener la ultima referencia de la direccion url
     var id = request.params.id;
@@ -166,7 +166,7 @@ app.post('/', (request, response) => {
 //		Eliminar usuario por id
 // ==========================================
 
-app.delete('/:id', mdAutenticacion.verificarToken, (request, response) =>{
+app.delete('/:id', [ mdAutenticacion.verificarToken, mdAutenticacion.verificarADMIN_ROLE ], (request, response) =>{
 
     var id = request.params.id;
 

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from 'src/app/config/config';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { UsuarioService } from '../usuario/usuario.service';
 import { Medico } from 'src/app/models/medico.model';
+
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -41,13 +43,18 @@ export class MedicoService {
 
   borrarMedicos( id: string ) {
 
-    let url= URL_SERVICIOS + '/medico/' + id;
+    let url = URL_SERVICIOS + '/medico/' + id;
     url += '?token=' + this._usuarioService.token;
 
     return this.http.delete( url ).pipe(
       map(  response => {
         swal( 'Medico Borrado', 'Medico Borrado Correctamente', 'success' );
         return response;
+      }),
+
+      catchError( error => {
+        swal( error.error.mensaje, error.error.errors.message, 'error' );
+        return throwError( error );
       })
     );
 
@@ -68,6 +75,11 @@ export class MedicoService {
         map( (response: any ) => {
           swal( 'Medico actualizado', medico.nombre, 'success' );
           return response.medico;
+        }),
+
+        catchError( error => {
+          swal( error.error.mensaje, error.error.errors.message, 'error' );
+          return throwError( error );
         })
         
       );
@@ -83,7 +95,13 @@ export class MedicoService {
         map( (response: any ) => {
           swal( 'Medico Creado', medico.nombre, 'success' );
           return response.medico;
+        }),
+
+        catchError( error => {
+          swal( error.error.mensaje, error.error.errors.message, 'error' );
+          return throwError( error );
         })
+
       );
     }
 

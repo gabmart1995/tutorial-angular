@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 import { URL_SERVICIOS } from './../../config/config';
 import { Hospital } from '../../models/hospital.models';
@@ -55,7 +56,12 @@ export class HospitalService {
     url += '?token=' + this._usuarioService.token;
 
     return this.http.delete( url ).pipe(
-      map( ( response ) => swal('Hospital borrado', 'eliminado correctamente', 'success' ) )
+      map( ( response ) => swal('Hospital borrado', 'eliminado correctamente', 'success' ) ),
+      
+      catchError( error => {
+        swal( error.error.mensaje, error.error.errors.message, 'error' );
+        return throwError( error );
+      })
     );
   }
 
@@ -64,8 +70,13 @@ export class HospitalService {
     let url =  URL_SERVICIOS + '/hospital/?token=' + this._usuarioService.token;
 
     return this.http.post( url, { nombre } ).pipe(
-        map( ( response: any ) =>  response.hospital )
-      );
+       map( ( response: any ) =>  response.hospital ),
+
+       catchError( error => {
+        swal( error.error.mensaje, error.error.errors.message, 'error' );
+        return throwError( error );
+      })
+    );
   }
 
   buscarHospital( termino: string ) {
@@ -82,14 +93,17 @@ export class HospitalService {
     let url = URL_SERVICIOS + '/hospital/' + hospital._id;
     url += '?token=' + this._usuarioService.token;
 
-    return this.http.patch( url, hospital )
-      .pipe( map( (response: any) => {
-
+    return this.http.patch( url, hospital ).pipe( 
+      map( (response: any) => {
         swal( 'Hospital Actualizado', hospital.nombre, 'success' );
         return response.hospital;
-      })
+      }),
 
-      );
+      catchError( error => {
+        swal( error.error.mensaje, error.error.errors.message, 'error' );
+        return throwError( error );
+      })
+    );
   }
 
 
